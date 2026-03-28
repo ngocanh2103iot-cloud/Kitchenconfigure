@@ -3,7 +3,7 @@
 #include "audio.h"
 #include "config.h"
 
-static float audio_buffer[FRAME_SIZE];
+static float audio_buffer[num_samples]; 
 
 void audio_init() {
     i2s_config_t i2s_config = {
@@ -32,10 +32,16 @@ void audio_init() {
 void record_audio() {
     size_t bytes_read;
     int32_t raw_samples[FRAME_SIZE]; 
-    i2s_read(I2S_NUM_0, raw_samples, sizeof(raw_samples), &bytes_read, portMAX_DELAY);
+    
 
-    for (int i = 0; i < FRAME_SIZE; i++) {
-        audio_buffer[i] = (float)raw_samples[i] / 2147483648.0f;
+    for(int offset = 0; offset < num_samples; offset += FRAME_SIZE) {
+        i2s_read(I2S_NUM_0, raw_samples, sizeof(raw_samples), &bytes_read, portMAX_DELAY);
+        int samples_read = bytes_read / sizeof(int32_t);
+        for (int i = 0; i < samples_read; i++) {
+            if (offset + i < num_samples) {
+                audio_buffer[offset + i] = (float)raw_samples[i] / 2147483648.0f; 
+            }
+        }
     }
 }
 

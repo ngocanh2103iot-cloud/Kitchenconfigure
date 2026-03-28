@@ -11,6 +11,7 @@ float features[FEATURE_COUNT];
 void setup() {
   Serial.begin(115200);
   audio_init();
+  features_init(); 
   model_init();
   Serial.println("System Started");
 }
