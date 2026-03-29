@@ -15,3 +15,6 @@
 #define num_frames 61
 
 #define FEATURE_COUNT 10
+
+// Mở comment dòng dưới để sử dụng dữ liệu âm thanh mẫu (chopping)
+#define USE_DUMMY_AUDIO

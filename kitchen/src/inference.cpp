@@ -6,12 +6,11 @@
 #include <Arduino.h>
 #include <TensorFlowLite_ESP32.h>
 
-
 namespace {
 tflite::MicroInterpreter *interpreter = nullptr;
 TfLiteTensor *input = nullptr;
 TfLiteTensor *output = nullptr;
-alignas(16) uint8_t tensorArena[40 * 1024];
+alignas(16) uint8_t tensorArena[15 * 1024];
 } // namespace
 
 const char *labels[6] = {"chopping", "door",  "frying",
