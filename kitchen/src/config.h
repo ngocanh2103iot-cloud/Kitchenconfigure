@@ -10,11 +10,8 @@
 #define n_fft 512
 #define hop_length 256
 #define n_mels 40
-#define n_mfcc 10
+#define n_mfcc 13
 #define num_samples 16000
 #define num_frames 61
 
-#define FEATURE_COUNT 10
-
-// Mở comment dòng dưới để sử dụng dữ liệu âm thanh mẫu (chopping)
-#define USE_DUMMY_AUDIO
+#define FEATURE_COUNT 13

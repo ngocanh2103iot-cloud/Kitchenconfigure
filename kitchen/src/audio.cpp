@@ -3,14 +3,11 @@
 #include "audio.h"
 #include "config.h"
 
-#ifdef USE_DUMMY_AUDIO
-#include "dummy_audio.h"
-#endif
+
 
 static int16_t audio_buffer[num_samples]; 
 
 void audio_init() {
-#ifndef USE_DUMMY_AUDIO
     i2s_config_t i2s_config = {
         .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
         .sample_rate = SAMPLE_RATE,
@@ -32,13 +29,9 @@ void audio_init() {
 
     i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
     i2s_set_pin(I2S_NUM_0, &pin_config);
-#else
-    Serial.println("Audio: Using DUMMY AUDIO (Sample: Chopping)");
-#endif
 }
 
 void record_audio() {
-#ifndef USE_DUMMY_AUDIO
     size_t bytes_read;
     int32_t raw_samples[FRAME_SIZE]; 
     
@@ -52,14 +45,6 @@ void record_audio() {
             }
         }
     }
-#else
-    // Copy dummy data to audio buffer, convert back to int16 range
-    for (int i = 0; i < num_samples; i++) {
-        audio_buffer[i] = (int16_t)(dummy_audio[i] * 32767.0f);
-    }
-    // Simulation delay
-    delay(100); 
-#endif
 }
 
 int16_t* get_audio() {

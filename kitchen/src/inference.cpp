@@ -1,5 +1,6 @@
 #include "inference.h"
 #include "model.h"
+#include "config.h"
 #include "tensorflow/lite/micro/all_ops_resolver.h"
 #include "tensorflow/lite/micro/micro_error_reporter.h"
 #include "tensorflow/lite/micro/micro_interpreter.h"
@@ -33,19 +34,19 @@ void model_init() {
 int run_inference(float *features) {
   // 1. Đưa dữ liệu vào (Tự động chuyển sang INT8 nếu model yêu cầu)
   if (input->type == kTfLiteInt8) {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < FEATURE_COUNT; i++) {
       input->data.int8[i] = (int8_t)(features[i] / input->params.scale +
                                      input->params.zero_point);
     }
   } else {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < FEATURE_COUNT; i++) {
       input->data.f[i] = features[i];
     }
   }
 
   // In input để debug
   Serial.print("input: ");
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < FEATURE_COUNT; i++) {
     Serial.print(features[i]);
     Serial.print(" ");
   }
